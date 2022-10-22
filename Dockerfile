@@ -36,15 +36,8 @@ LABEL org.opencontainers.image.source="https://github.com/klo2k/nexus3-docker"
 ARG DEBIAN_FRONTEND=noninteractive
 RUN apt update && \
     # Add AdoptOpenJDK repo
-    apt install --yes apt-transport-https ca-certificates gnupg software-properties-common wget && \
-    wget --quiet --output-document=- https://adoptopenjdk.jfrog.io/adoptopenjdk/api/gpg/key/public | apt-key add - && \
-    add-apt-repository --yes https://adoptopenjdk.jfrog.io/adoptopenjdk/deb/ && \
-    # Work-around adoptopenjdk-8-hotspot-jre installation error
-    mkdir --parent /usr/share/man/man1/ && \
-    # Install JRE 8 along with missing dependency
-    apt update && apt install --yes adoptopenjdk-8-hotspot-jre libatomic1 && \
+    apt install --yes apt-transport-https ca-certificates gnupg software-properties-common openjdk-8-jdk && \
     # Clean-up
-    apt purge --yes apt-transport-https gnupg software-properties-common wget && \
     apt autoremove --yes && apt clean
 
 # Setup: Rename App, Data and Work directory per official image
@@ -97,7 +90,7 @@ EXPOSE 8081
 
 USER nexus
 
-ENV INSTALL4J_ADD_VM_PARAMS="-Xms1200m -Xmx1200m -XX:MaxDirectMemorySize=2g -Djava.util.prefs.userRoot=/nexus-data/javaprefs"
+ENV INSTALL4J_ADD_VM_PARAMS="-Xms1536m -Xmx1536m -XX:MaxDirectMemorySize=1024m -Djava.util.prefs.userRoot=/nexus-data/javaprefs"
 ENV NEXUS_CONTEXT=''
 
 CMD ["sh", "-c", "/opt/sonatype/start-nexus-repository-manager.sh"]
