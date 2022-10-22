@@ -36,7 +36,7 @@ LABEL org.opencontainers.image.source="https://github.com/klo2k/nexus3-docker"
 ARG DEBIAN_FRONTEND=noninteractive
 RUN apt update && apt install --yes curl apt-transport-https ca-certificates gnupg software-properties-common && \
     curl --silent https://adoptopenjdk.jfrog.io/adoptopenjdk/api/gpg/key/public | apt-key add - && \
-    cat <<EOF | tee -a /etc/apt/sources.list.d/adoptopenjdk.list deb https://adoptopenjdk.jfrog.io/adoptopenjdk/deb/ $(lsb_release  --codename --short) main EOF && \
+    cat <<EOF | tee -a /etc/apt/sources.list.d/adoptopenjdk.list deb https://adoptopenjdk.jfrog.io/adoptopenjdk/deb/ buster main EOF && \
     apt update && apt install --yes adoptopenjdk-8-hotspot && \
     apt autoremove --yes && apt clean
 
